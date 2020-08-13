@@ -1,0 +1,46 @@
+version: "2.4"
+
+services:
+
+  httpd:
+    image: httpd
+    labels:
+      traefik.enable: true
+      traefik.http.routers.httpd.rule: Host(`httpd.bret.lol`)
+      traefik.http.routers.httpd.entrypoints: websecure
+      traefik.http.routers.httpd.tls: true
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+
+  nginx:
+    image: nginx
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginx.rule: Host(`nginx.bret.lol`)
+      traefik.http.routers.nginx.entrypoints: websecure
+      traefik.http.routers.nginx.tls: true
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+  traefik:
+    image: "traefik:v2.2"
+    healthcheck:
+      test: 
+        - CMD
+        - traefik
+        - healthcheck
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - ./traefik.yaml:/etc/traefik/traefik.yaml
+      - ~/.certs/:/certs/
+      - /var/run/docker.sock:/var/run/docker.sock
+

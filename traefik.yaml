@@ -1,0 +1,57 @@
+## STATIC CONFIG (restart traefik to update)
+
+# shows you a log msg if a newer image tag can be used
+global:
+  checkNewVersion: true
+
+# log default is ERROR, but WARN is more helpful
+log:
+  level: WARN
+  # level: INFO
+
+# enable dashboard on 8080 with NO AUTH
+api:
+  insecure: true
+  dashboard: true
+
+# enable ping so the `traefik healthcheck` works
+ping: {}
+
+# auto-proxy containers if they have proper labels
+# and also use this file for dynamic config (tls)
+providers:
+  docker:
+    exposedByDefault: false
+    watch: true
+  file:
+    fileName: /etc/traefik/traefik.yaml
+    watch: true
+
+# listen on 80/443, and redirect all 80 to 443 via 301
+entryPoints:
+  web:
+    address: :80
+    # comment out these lins if you don't want to redirect everything
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: :443
+
+
+## DYNAMIC CONFIG
+
+tls:
+  certificates:
+    - certFile: /certs/bret.lol.crt
+      keyFile: /certs/bret.lol.key
+# when troubleshooting certs, enable this so traefik doesn't use 
+# its own self-signed. By default if it can't find a matching
+# cert, it'll just create its own which will cause cert warnings
+# in browser and can be confusing to troubleshoot
+  # options:
+    # default:
+      # sniStrict: true
