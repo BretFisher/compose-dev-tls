@@ -6,7 +6,7 @@ services:
     image: httpd
     labels:
       traefik.enable: true
-      traefik.http.routers.httpd.rule: Host(`httpd.bret.lol`)
+      traefik.http.routers.httpd.rule: Host(`httpd.${MAIN_DOMAIN}`)
       traefik.http.routers.httpd.entrypoints: websecure
       traefik.http.routers.httpd.tls: true
     depends_on:
@@ -18,7 +18,7 @@ services:
     image: nginx
     labels:
       traefik.enable: true
-      traefik.http.routers.nginx.rule: Host(`nginx.bret.lol`)
+      traefik.http.routers.nginx.rule: Host(`nginx.${MAIN_DOMAIN}`)
       traefik.http.routers.nginx.entrypoints: websecure
       traefik.http.routers.nginx.tls: true
     depends_on:
@@ -27,6 +27,14 @@ services:
 
   traefik:
     image: "traefik:v2.2"
+    environment:
+       DO_AUTH_TOKEN: ${DO_AUTH_TOKEN}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.tls: true
+      traefik.http.routers.traefik.tls.certresolver: leresolver
+      traefik.http.routers.traefik.tls.domains[0].main: ${MAIN_DOMAIN}
+      traefik.http.routers.traefik.tls.domains[0].sans: ${SANS_DOMAIN}
     healthcheck:
       test: 
         - CMD
@@ -41,6 +49,6 @@ services:
       - "8080:8080"
     volumes:
       - ./traefik.yaml:/etc/traefik/traefik.yaml
-      - ~/.certs/:/certs/
+      - ./cert/acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
 
