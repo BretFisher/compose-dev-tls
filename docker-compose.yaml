@@ -8,7 +8,7 @@ services:
       traefik.enable: true
       traefik.http.routers.httpd.rule: Host(`httpd.${MAIN_DOMAIN}`)
       traefik.http.routers.httpd.entrypoints: websecure
-      traefik.http.routers.httpd.tls: true
+      traefik.http.routers.httpd.tls.certresolver: leresolver
     depends_on:
       traefik:
         condition: service_healthy
@@ -20,7 +20,7 @@ services:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`nginx.${MAIN_DOMAIN}`)
       traefik.http.routers.nginx.entrypoints: websecure
-      traefik.http.routers.nginx.tls: true
+      traefik.http.routers.nginx.tls.certresolver: leresolver
     depends_on:
       traefik:
         condition: service_healthy
