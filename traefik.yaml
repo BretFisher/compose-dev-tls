@@ -6,8 +6,8 @@ global:
 
 # log default is ERROR, but WARN is more helpful
 log:
-  level: WARN
-  # level: INFO
+  # level: WARN
+  level: debug
 
 # enable dashboard on 8080 with NO AUTH
 api:
@@ -44,10 +44,29 @@ entryPoints:
 
 ## DYNAMIC CONFIG
 
-tls:
-  certificates:
-    - certFile: /certs/bret.lol.crt
-      keyFile: /certs/bret.lol.key
+certificatesResolvers:
+  leresolver:
+    # Enable ACME (Let's Encrypt): automatic SSL.
+    acme:
+      email: test@your-super-duper-email.com
+      storage: acme.json
+      # Optional
+      # Default: "https://acme-v02.api.letsencrypt.org/directory"
+      #
+      # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        # DNS provider used, more https://docs.traefik.io/https/acme/#providers
+        # 
+        # Required
+        #
+        provider: digitalocean
+        delayBeforeCheck: 0 
+
+
+# tls:
+#   certificates:
+#     - certFile: /certs/bret.lol.crt
+#       keyFile: /certs/bret.lol.key
 # when troubleshooting certs, enable this so traefik doesn't use 
 # its own self-signed. By default if it can't find a matching
 # cert, it'll just create its own which will cause cert warnings
