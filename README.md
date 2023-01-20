@@ -12,6 +12,8 @@ This is a template of the solution I've used in various forms for years for loca
 
 Inspired by [this great Traefik + Compose walkthrough](https://github.com/DoTheEvo/Traefik-v2-examples)
 
+![Traffic diagram](network-diagram-compose-tls-traefik.png)
+
 ## Overall Steps to Implement
 
 1. Decide on your URL scheme like `*.xip.io`, `*.localhost`, `*.vcap.me`, or even `*.bret.lol`
