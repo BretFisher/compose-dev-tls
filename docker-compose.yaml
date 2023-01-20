@@ -1,4 +1,4 @@
-version: "2.4"
+# no more versions needed! Compose spec supports all features w/o a version
 
 services:
 
@@ -26,7 +26,7 @@ services:
         condition: service_healthy
 
   traefik:
-    image: "traefik:v2.2"
+    image: "traefik:2.9"
     healthcheck:
       test: 
         - CMD
