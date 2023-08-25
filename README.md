@@ -16,7 +16,7 @@ Inspired by [this great Traefik + Compose walkthrough](https://github.com/DoTheE
 
 ## Overall Steps to Implement
 
-1. Decide on your URL scheme like `*.xip.io`, `*.localhost`, `*.vcap.me`, or even `*.bret.lol`
+1. Decide on your URL scheme like `*.nip.io`, `*.localhost`, `*.vcap.me`, or even `*.bret.lol`
 2. Create and install a self-signed wildcard cert for your browser with `cert.sh`
 3. Add this `docker-compose.yaml` and `traefik.yaml` to your projects, and replace the nginx/httpd example compose services with your apps
 
